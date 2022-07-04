@@ -1,4 +1,4 @@
-import { getDicts } from '@/api/system/dict/data'
+import { getDicts } from '@/api/system/config'
 
 /**
  * 获取字典数据

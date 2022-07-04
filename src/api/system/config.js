@@ -17,6 +17,15 @@ export function getConfig(configId) {
   })
 }
 
+// 根据字典类型查询字典数据信息
+export function getDicts(dictType) {
+  return request({
+    url: '/system/config/dict/' + dictType,
+    method: 'get'
+  })
+}
+
+
 // 根据参数键名查询参数值 TODO 弃用了
 export function getConfigKey(configKey) {
   return request({

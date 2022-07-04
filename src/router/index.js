@@ -119,32 +119,6 @@ export const constantRoutes = [
         meta: { title: '字典数据', activeMenu: '/system/dict' }
       }
     ]
-  },
-  {
-    path: '/monitor/job-log',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/monitor/job/log'),
-        name: 'JobLog',
-        meta: { title: '调度日志', activeMenu: '/monitor/job' }
-      }
-    ]
-  },
-  {
-    path: '/tool/gen-edit',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/tool/gen/editTable'),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
-      }
-    ]
   }
 ];
 
