@@ -1,7 +1,11 @@
 import request from '@/utils/request'
+import { encrypt, decrypt } from "@/utils/jsencrypt";
 
 // 登录方法
 export function login(username, password, code, uuid) {
+  password = encrypt(password);
+
+  // console.log(passwordEncrypt);
   const data = {
     username,
     password,
