@@ -17,14 +17,14 @@
 defineProps({
   isActive: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-const emit = defineEmits()
+const emit = defineEmits();
 const toggleClick = () => {
   emit('toggleClick');
-}
+};
 </script>
 
 <style scoped>

@@ -46,7 +46,7 @@
 </template>
 
 <script setup name="AuthRole">
-import { getAuthRole, updateAuthRole } from "@/api/system/user";
+import { getAuthRole, updateAuthRole } from '@/api/system/user';
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();
@@ -60,48 +60,48 @@ const roles = ref([]);
 const form = ref({
   nickName: undefined,
   userName: undefined,
-  userId: undefined
+  userId: undefined,
 });
 
 /** 单击选中行数据 */
 function clickRow(row) {
-  proxy.$refs["roleRef"].toggleRowSelection(row);
-};
+  proxy.$refs.roleRef.toggleRowSelection(row);
+}
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  roleIds.value = selection.map(item => item.roleId);
-};
+  roleIds.value = selection.map((item) => item.roleId);
+}
 /** 保存选中的数据编号 */
 function getRowKey(row) {
   return row.roleId;
-};
+}
 /** 关闭按钮 */
 function close() {
-  const obj = { path: "/system/user" };
+  const obj = { path: '/system/user' };
   proxy.$tab.closeOpenPage(obj);
-};
+}
 /** 提交按钮 */
 function submitForm() {
-  const userId = form.value.userId;
-  const rIds = roleIds.value.join(",");
-  updateAuthRole({ userId: userId, roleIds: rIds }).then(response => {
-    proxy.$modal.msgSuccess("授权成功");
+  const { userId } = form.value;
+  const rIds = roleIds.value.join(',');
+  updateAuthRole({ userId, roleIds: rIds }).then((response) => {
+    proxy.$modal.msgSuccess('授权成功');
     close();
   });
-};
+}
 
 (() => {
   const userId = route.params && route.params.userId;
   if (userId) {
     loading.value = true;
-    getAuthRole(userId).then(response => {
+    getAuthRole(userId).then((response) => {
       form.value = response.user;
       roles.value = response.roles;
       total.value = roles.value.length;
       nextTick(() => {
-        roles.value.forEach(row => {
+        roles.value.forEach((row) => {
           if (row.flag) {
-            proxy.$refs["roleRef"].toggleRowSelection(row);
+            proxy.$refs.roleRef.toggleRowSelection(row);
           }
         });
       });

@@ -172,10 +172,12 @@
 </template>
 
 <script setup name="Notice">
-import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
+import {
+  listNotice, getNotice, delNotice, addNotice, updateNotice,
+} from '@/api/system/notice';
 
 const { proxy } = getCurrentInstance();
-const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type");
+const { sys_notice_status, sys_notice_type } = proxy.useDict('sys_notice_status', 'sys_notice_type');
 
 const noticeList = ref([]);
 const open = ref(false);
@@ -185,7 +187,7 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
+const title = ref('');
 
 const data = reactive({
   form: {},
@@ -194,11 +196,11 @@ const data = reactive({
     pageSize: 10,
     noticeTitle: undefined,
     createBy: undefined,
-    status: undefined
+    status: undefined,
   },
   rules: {
-    noticeTitle: [{ required: true, message: "公告标题不能为空", trigger: "blur" }],
-    noticeType: [{ required: true, message: "公告类型不能为空", trigger: "change" }]
+    noticeTitle: [{ required: true, message: '公告标题不能为空', trigger: 'blur' }],
+    noticeType: [{ required: true, message: '公告类型不能为空', trigger: 'change' }],
   },
 });
 
@@ -207,7 +209,7 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询公告列表 */
 function getList() {
   loading.value = true;
-  listNotice(queryParams.value).then(response => {
+  listNotice(queryParams.value).then((response) => {
     noticeList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -225,9 +227,9 @@ function reset() {
     noticeTitle: undefined,
     noticeType: undefined,
     noticeContent: undefined,
-    status: "0"
+    status: '0',
   };
-  proxy.resetForm("noticeRef");
+  proxy.resetForm('noticeRef');
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -236,12 +238,12 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  proxy.resetForm('queryRef');
   handleQuery();
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.noticeId);
+  ids.value = selection.map((item) => item.noticeId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -249,31 +251,31 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加公告";
+  title.value = '添加公告';
 }
-/**修改按钮操作 */
+/** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
   const noticeId = row.noticeId || ids.value;
-  getNotice(noticeId).then(response => {
+  getNotice(noticeId).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改公告";
+    title.value = '修改公告';
   });
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["noticeRef"].validate(valid => {
+  proxy.$refs.noticeRef.validate((valid) => {
     if (valid) {
       if (form.value.noticeId != undefined) {
-        updateNotice(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+        updateNotice(form.value).then((response) => {
+          proxy.$modal.msgSuccess('修改成功');
           open.value = false;
           getList();
         });
       } else {
-        addNotice(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+        addNotice(form.value).then((response) => {
+          proxy.$modal.msgSuccess('新增成功');
           open.value = false;
           getList();
         });
@@ -283,12 +285,10 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const noticeIds = row.noticeId || ids.value
-  proxy.$modal.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？').then(function() {
-    return delNotice(noticeIds);
-  }).then(() => {
+  const noticeIds = row.noticeId || ids.value;
+  proxy.$modal.confirm(`是否确认删除公告编号为"${noticeIds}"的数据项？`).then(() => delNotice(noticeIds)).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
 }
 

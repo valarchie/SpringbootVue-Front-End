@@ -59,16 +59,16 @@
 </template>
 
 <script setup name="SelectUser">
-import { authUserSelectAll, unallocatedUserList } from "@/api/system/role";
+import { authUserSelectAll, unallocatedUserList } from '@/api/system/role';
 
 const props = defineProps({
   roleId: {
-    type: [Number, String]
-  }
+    type: [Number, String],
+  },
 });
 
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
 
 const userList = ref([]);
 const visible = ref(false);
@@ -80,7 +80,7 @@ const queryParams = reactive({
   pageSize: 10,
   roleId: undefined,
   userName: undefined,
-  phonenumber: undefined
+  phonenumber: undefined,
 });
 
 // 显示弹框
@@ -89,17 +89,17 @@ function show() {
   getList();
   visible.value = true;
 }
-/**选择行 */
+/** 选择行 */
 function clickRow(row) {
-  proxy.$refs["refTable"].toggleRowSelection(row);
+  proxy.$refs.refTable.toggleRowSelection(row);
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
-  userIds.value = selection.map(item => item.userId);
+  userIds.value = selection.map((item) => item.userId);
 }
 // 查询表数据
 function getList() {
-  unallocatedUserList(queryParams).then(res => {
+  unallocatedUserList(queryParams).then((res) => {
     userList.value = res.rows;
     total.value = res.total;
   });
@@ -111,23 +111,23 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  proxy.resetForm('queryRef');
   handleQuery();
 }
-const emit = defineEmits(["ok"]);
+const emit = defineEmits(['ok']);
 /** 选择授权用户操作 */
 function handleSelectUser() {
-  const roleId = queryParams.roleId;
-  const uIds = userIds.value.join(",");
-  if (uIds == "") {
-    proxy.$modal.msgError("请选择要分配的用户");
+  const { roleId } = queryParams;
+  const uIds = userIds.value.join(',');
+  if (uIds == '') {
+    proxy.$modal.msgError('请选择要分配的用户');
     return;
   }
-  authUserSelectAll({ roleId: roleId, userIds: uIds }).then(res => {
+  authUserSelectAll({ roleId, userIds: uIds }).then((res) => {
     proxy.$modal.msgSuccess(res.msg);
     if (res.code === 200) {
       visible.value = false;
-      emit("ok");
+      emit('ok');
     }
   });
 }

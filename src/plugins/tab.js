@@ -1,5 +1,5 @@
-import store from '@/store'
-import router from '@/router'
+import store from '@/store';
+import router from '@/router';
 
 export default {
   // 刷新当前tab页签
@@ -9,22 +9,22 @@ export default {
       matched.forEach((m) => {
         if (m.components && m.components.default && m.components.default.name) {
           if (!['Layout', 'ParentView'].includes(m.components.default.name)) {
-            obj = { name: m.components.default.name, path: path, query: query };
+            obj = { name: m.components.default.name, path, query };
           }
         }
       });
     }
     return store.dispatch('tagsView/delCachedView', obj).then(() => {
-      const { path, query } = obj
+      const { path, query } = obj;
       router.replace({
-        path: '/redirect' + path,
-        query: query
-      })
-    })
+        path: `/redirect${path}`,
+        query,
+      });
+    });
   },
   // 关闭当前tab页签，打开新页签
   closeOpenPage(obj) {
-    store.dispatch("tagsView/delView", router.currentRoute.value);
+    store.dispatch('tagsView/delView', router.currentRoute.value);
     if (obj !== undefined) {
       return router.push(obj);
     }
@@ -32,9 +32,7 @@ export default {
   // 关闭指定tab页签
   closePage(obj) {
     if (obj === undefined) {
-      return store.dispatch('tagsView/delView', router.currentRoute.value).then(({ lastPath }) => {
-        return router.push(lastPath || '/index');
-      });
+      return store.dispatch('tagsView/delView', router.currentRoute.value).then(({ lastPath }) => router.push(lastPath || '/index'));
     }
     return store.dispatch('tagsView/delView', obj);
   },
@@ -61,5 +59,5 @@ export default {
   // 修改tab页签
   updatePage(obj) {
     return store.dispatch('tagsView/updateVisitedView', obj);
-  }
-}
+  },
+};

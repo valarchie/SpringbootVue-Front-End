@@ -5,7 +5,7 @@
 
 export default {
   beforeMount(el, { value, arg }) {
-    if (arg === "callback") {
+    if (arg === 'callback') {
       el.$copyCallback = value;
     } else {
       el.$copyValue = value;
@@ -15,11 +15,11 @@ export default {
           el.$copyCallback(el.$copyValue);
         }
       };
-      el.addEventListener("click", handler);
-      el.$destroyCopy = () => el.removeEventListener("click", handler);
+      el.addEventListener('click', handler);
+      el.$destroyCopy = () => el.removeEventListener('click', handler);
     }
-  }
-}
+  },
+};
 
 function copyTextToClipboard(input, { target = document.body } = {}) {
   const element = document.createElement('textarea');

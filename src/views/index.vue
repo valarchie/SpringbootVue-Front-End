@@ -796,10 +796,10 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.2')
+const version = ref('3.8.2');
 
 function goTarget(url) {
-  window.open(url, '__blank')
+  window.open(url, '__blank');
 }
 </script>
 
@@ -866,4 +866,3 @@ function goTarget(url) {
   }
 }
 </style>
-

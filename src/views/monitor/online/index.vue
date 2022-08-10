@@ -61,7 +61,7 @@
 </template>
 
 <script setup name="Online">
-import { forceLogout, list as initData } from "@/api/monitor/online";
+import { forceLogout, list as initData } from '@/api/monitor/online';
 
 const { proxy } = getCurrentInstance();
 
@@ -73,13 +73,13 @@ const pageSize = ref(10);
 
 const queryParams = ref({
   ipaddr: undefined,
-  userName: undefined
+  userName: undefined,
 });
 
 /** 查询登录日志列表 */
 function getList() {
   loading.value = true;
-  initData(queryParams.value).then(response => {
+  initData(queryParams.value).then((response) => {
     onlineList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -92,16 +92,14 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  proxy.resetForm('queryRef');
   handleQuery();
 }
 /** 强退按钮操作 */
 function handleForceLogout(row) {
-    proxy.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
-  return forceLogout(row.tokenId);
-  }).then(() => {
+  proxy.$modal.confirm(`是否确认强退名称为"${row.userName}"的用户?`).then(() => forceLogout(row.tokenId)).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
 }
 

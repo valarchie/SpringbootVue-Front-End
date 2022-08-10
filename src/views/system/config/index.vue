@@ -175,10 +175,12 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config";
+import {
+  listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache,
+} from '@/api/system/config';
 
 const { proxy } = getCurrentInstance();
-const { sys_yes_no } = proxy.useDict("sys_yes_no");
+const { sys_yes_no } = proxy.useDict('sys_yes_no');
 
 const configList = ref([]);
 const open = ref(false);
@@ -188,7 +190,7 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
+const title = ref('');
 const dateRange = ref([]);
 
 const data = reactive({
@@ -198,13 +200,13 @@ const data = reactive({
     pageSize: 10,
     configName: undefined,
     configKey: undefined,
-    configType: undefined
+    configType: undefined,
   },
   rules: {
-    configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
-    configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
-    configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }]
-  }
+    configName: [{ required: true, message: '参数名称不能为空', trigger: 'blur' }],
+    configKey: [{ required: true, message: '参数键名不能为空', trigger: 'blur' }],
+    configValue: [{ required: true, message: '参数键值不能为空', trigger: 'blur' }],
+  },
 });
 
 const { queryParams, form, rules } = toRefs(data);
@@ -212,7 +214,7 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询参数列表 */
 function getList() {
   loading.value = true;
-  listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then((response) => {
     configList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -230,10 +232,10 @@ function reset() {
     configName: undefined,
     configKey: undefined,
     configValue: undefined,
-    configType: "Y",
-    remark: undefined
+    configType: 'Y',
+    remark: undefined,
   };
-  proxy.resetForm("configRef");
+  proxy.resetForm('configRef');
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -243,12 +245,12 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
+  proxy.resetForm('queryRef');
   handleQuery();
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.configId);
+  ids.value = selection.map((item) => item.configId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -256,31 +258,31 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加参数";
+  title.value = '添加参数';
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
   const configId = row.configId || ids.value;
-  getConfig(configId).then(response => {
+  getConfig(configId).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改参数";
+    title.value = '修改参数';
   });
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["configRef"].validate(valid => {
+  proxy.$refs.configRef.validate((valid) => {
     if (valid) {
       if (form.value.configId != undefined) {
-        updateConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+        updateConfig(form.value).then((response) => {
+          proxy.$modal.msgSuccess('修改成功');
           open.value = false;
           getList();
         });
       } else {
-        addConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+        addConfig(form.value).then((response) => {
+          proxy.$modal.msgSuccess('新增成功');
           open.value = false;
           getList();
         });
@@ -291,23 +293,21 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const configIds = row.configId || ids.value;
-  proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
-    return delConfig(configIds);
-  }).then(() => {
+  proxy.$modal.confirm(`是否确认删除参数编号为"${configIds}"的数据项？`).then(() => delConfig(configIds)).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/config/export", {
-    ...queryParams.value
+  proxy.download('system/config/export', {
+    ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess("刷新缓存成功");
+    proxy.$modal.msgSuccess('刷新缓存成功');
   });
 }
 

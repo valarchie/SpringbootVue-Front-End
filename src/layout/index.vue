@@ -14,10 +14,12 @@
 </template>
 
 <script setup>
-import { useWindowSize } from '@vueuse/core'
-import Sidebar from './components/Sidebar/index.vue'
-import { AppMain, Navbar, Settings, TagsView } from './components'
-import defaultSettings from '@/settings'
+import { useWindowSize } from '@vueuse/core';
+import Sidebar from './components/Sidebar/index.vue';
+import {
+  AppMain, Navbar, Settings, TagsView,
+} from './components';
+import defaultSettings from '@/settings';
 
 const store = useStore();
 const theme = computed(() => store.state.settings.theme);
@@ -31,26 +33,26 @@ const classObj = computed(() => ({
   hideSidebar: !sidebar.value.opened,
   openSidebar: sidebar.value.opened,
   withoutAnimation: sidebar.value.withoutAnimation,
-  mobile: device.value === 'mobile'
-}))
+  mobile: device.value === 'mobile',
+}));
 
 const { width, height } = useWindowSize();
 const WIDTH = 992; // refer to Bootstrap's responsive design
 
 watchEffect(() => {
   if (device.value === 'mobile' && sidebar.value.opened) {
-    store.dispatch('app/closeSideBar', { withoutAnimation: false })
+    store.dispatch('app/closeSideBar', { withoutAnimation: false });
   }
   if (width.value - 1 < WIDTH) {
-    store.dispatch('app/toggleDevice', 'mobile')
-    store.dispatch('app/closeSideBar', { withoutAnimation: true })
+    store.dispatch('app/toggleDevice', 'mobile');
+    store.dispatch('app/closeSideBar', { withoutAnimation: true });
   } else {
-    store.dispatch('app/toggleDevice', 'desktop')
+    store.dispatch('app/toggleDevice', 'desktop');
   }
-})
+});
 
 function handleClickOutside() {
-  store.dispatch('app/closeSideBar', { withoutAnimation: false })
+  store.dispatch('app/closeSideBar', { withoutAnimation: false });
 }
 
 const settingRef = ref(null);

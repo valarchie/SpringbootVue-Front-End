@@ -114,10 +114,10 @@
 </template>
 
 <script setup name="Logininfor">
-import { list, delLogininfor, cleanLogininfor } from "@/api/monitor/logininfor";
+import { list, delLogininfor, cleanLogininfor } from '@/api/monitor/logininfor';
 
 const { proxy } = getCurrentInstance();
-const { sys_common_status } = proxy.useDict("sys_common_status");
+const { sys_common_status } = proxy.useDict('sys_common_status');
 
 const logininforList = ref([]);
 const loading = ref(true);
@@ -126,7 +126,7 @@ const ids = ref([]);
 const multiple = ref(true);
 const total = ref(0);
 const dateRange = ref([]);
-const defaultSort = ref({ prop: "loginTime", order: "descending" });
+const defaultSort = ref({ prop: 'loginTime', order: 'descending' });
 
 // 查询参数
 const queryParams = ref({
@@ -136,13 +136,13 @@ const queryParams = ref({
   userName: undefined,
   status: undefined,
   orderByColumn: undefined,
-  isAsc: undefined
+  isAsc: undefined,
 });
 
 /** 查询登录日志列表 */
 function getList() {
   loading.value = true;
-  list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  list(proxy.addDateRange(queryParams.value, dateRange.value)).then((response) => {
     logininforList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -156,13 +156,13 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
-  proxy.$refs["logininforRef"].sort(defaultSort.value.prop, defaultSort.value.order);
+  proxy.resetForm('queryRef');
+  proxy.$refs.logininforRef.sort(defaultSort.value.prop, defaultSort.value.order);
   handleQuery();
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.infoId);
+  ids.value = selection.map((item) => item.infoId);
   multiple.value = !selection.length;
 }
 /** 排序触发事件 */
@@ -174,25 +174,21 @@ function handleSortChange(column, prop, order) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const infoIds = row.infoId || ids.value;
-  proxy.$modal.confirm('是否确认删除访问编号为"' + infoIds + '"的数据项?').then(function () {
-    return delLogininfor(infoIds);
-  }).then(() => {
+  proxy.$modal.confirm(`是否确认删除访问编号为"${infoIds}"的数据项?`).then(() => delLogininfor(infoIds)).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
 }
 /** 清空按钮操作 */
 function handleClean() {
-  proxy.$modal.confirm("是否确认清空所有登录日志数据项?").then(function () {
-    return cleanLogininfor();
-  }).then(() => {
+  proxy.$modal.confirm('是否确认清空所有登录日志数据项?').then(() => cleanLogininfor()).then(() => {
     getList();
-    proxy.$modal.msgSuccess("清空成功");
+    proxy.$modal.msgSuccess('清空成功');
   }).catch(() => {});
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/logininfor/export", {
+  proxy.download('monitor/logininfor/export', {
     ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }

@@ -28,8 +28,8 @@
 </template>
 
 <script setup>
-import { constantRoutes } from "@/router"
-import { isHttp } from '@/utils/validate'
+import { constantRoutes } from '@/router';
+import { isHttp } from '@/utils/validate';
 
 // 顶部栏初始数
 const visibleNumber = ref(null);
@@ -49,56 +49,54 @@ const routers = computed(() => store.state.permission.topbarRouters);
 
 // 顶部显示菜单
 const topMenus = computed(() => {
-  let topMenus = [];
+  const topMenus = [];
   routers.value.map((menu) => {
     if (menu.hidden !== true) {
       // 兼容顶部栏一级菜单内部跳转
-      if (menu.path === "/") {
-          topMenus.push(menu.children[0]);
+      if (menu.path === '/') {
+        topMenus.push(menu.children[0]);
       } else {
-          topMenus.push(menu);
+        topMenus.push(menu);
       }
     }
-  })
+  });
   return topMenus;
-})
+});
 
 // 设置子路由
 const childrenMenus = computed(() => {
-  let childrenMenus = [];
+  const childrenMenus = [];
   routers.value.map((router) => {
-    for (let item in router.children) {
+    for (const item in router.children) {
       if (router.children[item].parentPath === undefined) {
-        if(router.path === "/") {
-          router.children[item].path = "/" + router.children[item].path;
-        } else {
-          if(!isHttp(router.children[item].path)) {
-            router.children[item].path = router.path + "/" + router.children[item].path;
-          }
+        if (router.path === '/') {
+          router.children[item].path = `/${router.children[item].path}`;
+        } else if (!isHttp(router.children[item].path)) {
+          router.children[item].path = `${router.path}/${router.children[item].path}`;
         }
         router.children[item].parentPath = router.path;
       }
       childrenMenus.push(router.children[item]);
     }
-  })
+  });
   return constantRoutes.concat(childrenMenus);
-})
+});
 
 // 默认激活的菜单
 const activeMenu = computed(() => {
-  const path = route.path;
+  const { path } = route;
   let activePath = path;
-  if (path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1) {
+  if (path !== undefined && path.lastIndexOf('/') > 0 && hideList.indexOf(path) === -1) {
     const tmpPath = path.substring(1, path.length);
-    activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"));
+    activePath = `/${tmpPath.substring(0, tmpPath.indexOf('/'))}`;
     store.dispatch('app/toggleSideBarHide', false);
-  } else if(!route.children) {
+  } else if (!route.children) {
     activePath = path;
     store.dispatch('app/toggleSideBarHide', true);
   }
   activeRoutes(activePath);
   return activePath;
-})
+});
 
 function setVisibleNumber() {
   const width = document.body.getBoundingClientRect().width / 3;
@@ -107,10 +105,10 @@ function setVisibleNumber() {
 
 function handleSelect(key, keyPath) {
   currentIndex.value = key;
-  const route = routers.value.find(item => item.path === key);
+  const route = routers.value.find((item) => item.path === key);
   if (isHttp(key)) {
     // http(s):// 路径新窗口打开
-    window.open(key, "_blank");
+    window.open(key, '_blank');
   } else if (!route || !route.children) {
     // 没有子路由路径内部打开
     router.push({ path: key });
@@ -123,30 +121,30 @@ function handleSelect(key, keyPath) {
 }
 
 function activeRoutes(key) {
-  let routes = [];
+  const routes = [];
   if (childrenMenus.value && childrenMenus.value.length > 0) {
     childrenMenus.value.map((item) => {
-      if (key == item.parentPath || (key == "index" && "" == item.path)) {
+      if (key == item.parentPath || (key == 'index' && item.path == '')) {
         routes.push(item);
       }
     });
   }
-  if(routes.length > 0) {
-    store.commit("SET_SIDEBAR_ROUTERS", routes);
+  if (routes.length > 0) {
+    store.commit('SET_SIDEBAR_ROUTERS', routes);
   }
   return routes;
 }
 
 onMounted(() => {
-  window.addEventListener('resize', setVisibleNumber)
-})
+  window.addEventListener('resize', setVisibleNumber);
+});
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', setVisibleNumber)
-})
+  window.removeEventListener('resize', setVisibleNumber);
+});
 
 onMounted(() => {
-  setVisibleNumber()
-})
+  setVisibleNumber();
+});
 </script>
 
 <style lang="scss">

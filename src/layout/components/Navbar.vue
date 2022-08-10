@@ -48,29 +48,29 @@
 </template>
 
 <script setup>
-import { ElMessageBox } from 'element-plus'
-import Breadcrumb from '@/components/Breadcrumb'
-import TopNav from '@/components/TopNav'
-import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+import { ElMessageBox } from 'element-plus';
+import Breadcrumb from '@/components/Breadcrumb';
+import TopNav from '@/components/TopNav';
+import Hamburger from '@/components/Hamburger';
+import Screenfull from '@/components/Screenfull';
+import SizeSelect from '@/components/SizeSelect';
+import HeaderSearch from '@/components/HeaderSearch';
+import RuoYiGit from '@/components/RuoYi/Git';
+import RuoYiDoc from '@/components/RuoYi/Doc';
 
 const store = useStore();
 const getters = computed(() => store.getters);
 
 function toggleSideBar() {
-  store.dispatch('app/toggleSideBar')
+  store.dispatch('app/toggleSideBar');
 }
 
 function handleCommand(command) {
   switch (command) {
-    case "setLayout":
+    case 'setLayout':
       setLayout();
       break;
-    case "logout":
+    case 'logout':
       logout();
       break;
     default:
@@ -82,15 +82,15 @@ function logout() {
   ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
   }).then(() => {
     store.dispatch('LogOut').then(() => {
       location.href = '/index';
-    })
+    });
   }).catch(() => { });
 }
 
-const emits = defineEmits(['setLayout'])
+const emits = defineEmits(['setLayout']);
 function setLayout() {
   emits('setLayout');
 }

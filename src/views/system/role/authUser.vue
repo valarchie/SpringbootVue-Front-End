@@ -1,4 +1,3 @@
-
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true">
@@ -47,9 +46,9 @@
             >批量取消授权</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button 
-               type="warning" 
-               plain 
+            <el-button
+               type="warning"
+               plain
                icon="Close"
                @click="handleClose"
             >关闭</el-button>
@@ -97,12 +96,12 @@
 </template>
 
 <script setup name="AuthUser">
-import selectUser from "./selectUser";
-import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/role";
+import selectUser from './selectUser';
+import { allocatedUserList, authUserCancel, authUserCancelAll } from '@/api/system/role';
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
 
 const userList = ref([]);
 const loading = ref(true);
@@ -122,7 +121,7 @@ const queryParams = reactive({
 /** 查询授权用户列表 */
 function getList() {
   loading.value = true;
-  allocatedUserList(queryParams).then(response => {
+  allocatedUserList(queryParams).then((response) => {
     userList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -130,7 +129,7 @@ function getList() {
 }
 // 返回按钮
 function handleClose() {
-  const obj = { path: "/system/role" };
+  const obj = { path: '/system/role' };
   proxy.$tab.closeOpenPage(obj);
 }
 /** 搜索按钮操作 */
@@ -140,36 +139,32 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  proxy.resetForm('queryRef');
   handleQuery();
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
-  userIds.value = selection.map(item => item.userId);
+  userIds.value = selection.map((item) => item.userId);
   multiple.value = !selection.length;
 }
 /** 打开授权用户表弹窗 */
 function openSelectUser() {
-  proxy.$refs["selectRef"].show();
+  proxy.$refs.selectRef.show();
 }
 /** 取消授权按钮操作 */
 function cancelAuthUser(row) {
-  proxy.$modal.confirm('确认要取消该用户"' + row.userName + '"角色吗？').then(function () {
-    return authUserCancel({ userId: row.userId, roleId: queryParams.roleId });
-  }).then(() => {
+  proxy.$modal.confirm(`确认要取消该用户"${row.userName}"角色吗？`).then(() => authUserCancel({ userId: row.userId, roleId: queryParams.roleId })).then(() => {
     getList();
-    proxy.$modal.msgSuccess("取消授权成功");
+    proxy.$modal.msgSuccess('取消授权成功');
   }).catch(() => {});
 }
 /** 批量取消授权按钮操作 */
 function cancelAuthUserAll(row) {
-  const roleId = queryParams.roleId;
-  const uIds = userIds.value.join(",");
-  proxy.$modal.confirm("是否取消选中用户授权数据项?").then(function () {
-    return authUserCancelAll({ roleId: roleId, userIds: uIds });
-  }).then(() => {
+  const { roleId } = queryParams;
+  const uIds = userIds.value.join(',');
+  proxy.$modal.confirm('是否取消选中用户授权数据项?').then(() => authUserCancelAll({ roleId, userIds: uIds })).then(() => {
     getList();
-    proxy.$modal.msgSuccess("取消授权成功");
+    proxy.$modal.msgSuccess('取消授权成功');
   }).catch(() => {});
 }
 

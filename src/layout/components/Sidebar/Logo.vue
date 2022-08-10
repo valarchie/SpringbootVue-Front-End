@@ -14,15 +14,15 @@
 </template>
 
 <script setup>
-import variables from '@/assets/styles/variables.module.scss'
-import logo from '@/assets/logo/logo.png'
+import variables from '@/assets/styles/variables.module.scss';
+import logo from '@/assets/logo/logo.png';
 
 defineProps({
   collapse: {
     type: Boolean,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const title = ref('若依管理系统');
 const store = useStore();

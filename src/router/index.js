@@ -1,5 +1,5 @@
-import { createWebHistory, createRouter } from 'vue-router'
-import Layout from '@/layout'
+import { createWebHistory, createRouter } from 'vue-router';
+import Layout from '@/layout';
 
 /**
  * Note: 路由配置项
@@ -30,29 +30,29 @@ export const constantRoutes = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue')
-      }
-    ]
+        component: () => import('@/views/redirect/index.vue'),
+      },
+    ],
   },
   {
     path: '/login',
     component: () => import('@/views/login'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/register',
     component: () => import('@/views/register'),
-    hidden: true
+    hidden: true,
   },
   {
-    path: "/:pathMatch(.*)*",
+    path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/401',
     component: () => import('@/views/error/401'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '',
@@ -63,9 +63,9 @@ export const constantRoutes = [
         path: '/index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
-    ]
+        meta: { title: '首页', icon: 'dashboard', affix: true },
+      },
+    ],
   },
   {
     path: '/user',
@@ -77,9 +77,9 @@ export const constantRoutes = [
         path: 'profile',
         component: () => import('@/views/system/user/profile/index'),
         name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' }
-      }
-    ]
+        meta: { title: '个人中心', icon: 'user' },
+      },
+    ],
   },
   {
     path: '/system/user-auth',
@@ -90,9 +90,9 @@ export const constantRoutes = [
         path: 'role/:userId(\\d+)',
         component: () => import('@/views/system/user/authRole'),
         name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user' }
-      }
-    ]
+        meta: { title: '分配角色', activeMenu: '/system/user' },
+      },
+    ],
   },
   {
     path: '/system/role-auth',
@@ -103,9 +103,9 @@ export const constantRoutes = [
         path: 'user/:roleId(\\d+)',
         component: () => import('@/views/system/role/authUser'),
         name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role' }
-      }
-    ]
+        meta: { title: '分配用户', activeMenu: '/system/role' },
+      },
+    ],
   },
   {
     path: '/system/dict-data',
@@ -116,10 +116,10 @@ export const constantRoutes = [
         path: 'index/:dictId(\\d+)',
         component: () => import('@/views/system/dict/data'),
         name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
-      }
-    ]
-  }
+        meta: { title: '字典数据', activeMenu: '/system/dict' },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
@@ -127,10 +127,9 @@ const router = createRouter({
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
-    } else {
-      return { top: 0 }
+      return savedPosition;
     }
+    return { top: 0 };
   },
 });
 

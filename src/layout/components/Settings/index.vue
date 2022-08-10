@@ -79,11 +79,11 @@
 </template>
 
 <script setup>
-import variables from '@/assets/styles/variables.module.scss'
-import originElementPlus from 'element-plus/theme-chalk/index.css'
-import axios from 'axios'
-import { ElLoading, ElMessage } from 'element-plus'
-import { useDynamicTitle } from '@/utils/dynamicTitle'
+import originElementPlus from 'element-plus/theme-chalk/index.css';
+import axios from 'axios';
+import { ElLoading, ElMessage } from 'element-plus';
+import variables from '@/assets/styles/variables.module.scss';
+import { useDynamicTitle } from '@/utils/dynamicTitle';
 
 const { proxy } = getCurrentInstance();
 const store = useStore();
@@ -91,7 +91,7 @@ const showSettings = ref(false);
 const theme = ref(store.state.settings.theme);
 const sideTheme = ref(store.state.settings.sideTheme);
 const storeSettings = computed(() => store.state.settings);
-const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
+const predefineColors = ref(['#409EFF', '#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585']);
 
 /** 是否需要topnav */
 const topNav = computed({
@@ -99,89 +99,89 @@ const topNav = computed({
   set: (val) => {
     store.dispatch('settings/changeSetting', {
       key: 'topNav',
-      value: val
-    })
+      value: val,
+    });
     if (!val) {
       store.dispatch('app/toggleSideBarHide', false);
-      store.commit("SET_SIDEBAR_ROUTERS", store.state.permission.defaultRoutes);
+      store.commit('SET_SIDEBAR_ROUTERS', store.state.permission.defaultRoutes);
     }
-  }
-})
+  },
+});
 /** 是否需要tagview */
 const tagsView = computed({
   get: () => storeSettings.value.tagsView,
   set: (val) => {
     store.dispatch('settings/changeSetting', {
       key: 'tagsView',
-      value: val
-    })
-  }
-})
-/**是否需要固定头部 */
+      value: val,
+    });
+  },
+});
+/** 是否需要固定头部 */
 const fixedHeader = computed({
   get: () => storeSettings.value.fixedHeader,
   set: (val) => {
     store.dispatch('settings/changeSetting', {
       key: 'fixedHeader',
-      value: val
-    })
-  }
-})
-/**是否需要侧边栏的logo */
+      value: val,
+    });
+  },
+});
+/** 是否需要侧边栏的logo */
 const sidebarLogo = computed({
   get: () => storeSettings.value.sidebarLogo,
   set: (val) => {
     store.dispatch('settings/changeSetting', {
       key: 'sidebarLogo',
-      value: val
-    })
-  }
-})
-/**是否需要侧边栏的动态网页的title */
+      value: val,
+    });
+  },
+});
+/** 是否需要侧边栏的动态网页的title */
 const dynamicTitle = computed({
   get: () => storeSettings.value.dynamicTitle,
   set: (val) => {
     store.dispatch('settings/changeSetting', {
       key: 'dynamicTitle',
-      value: val
-    })
+      value: val,
+    });
     // 动态设置网页标题
-    useDynamicTitle()
-  }
-})
+    useDynamicTitle();
+  },
+});
 
 function themeChange(val) {
   store.dispatch('settings/changeSetting', {
     key: 'theme',
-    value: val
-  })
+    value: val,
+  });
   theme.value = val;
 }
 function handleTheme(val) {
   store.dispatch('settings/changeSetting', {
     key: 'sideTheme',
-    value: val
-  })
+    value: val,
+  });
   sideTheme.value = val;
 }
 function saveSetting() {
-  proxy.$modal.loading("正在保存到本地，请稍候...");
-  let layoutSetting = {
-    "topNav": storeSettings.value.topNav,
-    "tagsView": storeSettings.value.tagsView,
-    "fixedHeader": storeSettings.value.fixedHeader,
-    "sidebarLogo": storeSettings.value.sidebarLogo,
-    "dynamicTitle": storeSettings.value.dynamicTitle,
-    "sideTheme": storeSettings.value.sideTheme,
-    "theme": storeSettings.value.theme
+  proxy.$modal.loading('正在保存到本地，请稍候...');
+  const layoutSetting = {
+    topNav: storeSettings.value.topNav,
+    tagsView: storeSettings.value.tagsView,
+    fixedHeader: storeSettings.value.fixedHeader,
+    sidebarLogo: storeSettings.value.sidebarLogo,
+    dynamicTitle: storeSettings.value.dynamicTitle,
+    sideTheme: storeSettings.value.sideTheme,
+    theme: storeSettings.value.theme,
   };
-  localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
-  setTimeout(proxy.$modal.closeLoading(), 1000)
+  localStorage.setItem('layout-setting', JSON.stringify(layoutSetting));
+  setTimeout(proxy.$modal.closeLoading(), 1000);
 }
 function resetSetting() {
-  proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...");
-  localStorage.removeItem("layout-setting")
-  setTimeout("window.location.reload()", 1000)
+  proxy.$modal.loading('正在清除设置缓存并刷新，请稍候...');
+  localStorage.removeItem('layout-setting');
+  setTimeout('window.location.reload()', 1000);
 }
 function openSetting() {
   showSettings.value = true;
@@ -189,7 +189,7 @@ function openSetting() {
 
 defineExpose({
   openSetting,
-})
+});
 </script>
 
 <style lang='scss' scoped>

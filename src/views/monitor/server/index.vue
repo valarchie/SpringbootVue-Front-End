@@ -170,14 +170,14 @@
 </template>
 
 <script setup>
-import { getServer } from '@/api/monitor/server'
+import { getServer } from '@/api/monitor/server';
 
 const server = ref([]);
 const { proxy } = getCurrentInstance();
 
 function getList() {
-  proxy.$modal.loading("正在加载服务监控数据，请稍候！");
-  getServer().then(response => {
+  proxy.$modal.loading('正在加载服务监控数据，请稍候！');
+  getServer().then((response) => {
     server.value = response.data;
     proxy.$modal.closeLoading();
   });

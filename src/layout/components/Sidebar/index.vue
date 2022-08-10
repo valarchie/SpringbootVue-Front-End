@@ -24,14 +24,14 @@
 </template>
 
 <script setup>
-import Logo from './Logo'
-import SidebarItem from './SidebarItem'
-import variables from '@/assets/styles/variables.module.scss'
+import Logo from './Logo';
+import SidebarItem from './SidebarItem';
+import variables from '@/assets/styles/variables.module.scss';
 
 const route = useRoute();
 const store = useStore();
 
-const sidebarRouters =  computed(() => store.getters.sidebarRouters);
+const sidebarRouters = computed(() => store.getters.sidebarRouters);
 const showLogo = computed(() => store.state.settings.sidebarLogo);
 const sideTheme = computed(() => store.state.settings.sideTheme);
 const theme = computed(() => store.state.settings.theme);
@@ -44,6 +44,6 @@ const activeMenu = computed(() => {
     return meta.activeMenu;
   }
   return path;
-})
+});
 
 </script>

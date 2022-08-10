@@ -65,29 +65,29 @@
 </template>
 
 <script setup>
-import { getCodeImg } from "@/api/login";
-import Cookies from "js-cookie";
-import { encrypt, decrypt } from "@/utils/jsencrypt";
+import Cookies from 'js-cookie';
+import { getCodeImg } from '@/api/login';
+import { encrypt, decrypt } from '@/utils/jsencrypt';
 
 const store = useStore();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const loginForm = ref({
-  username: "admin",
-  password: "admin123",
+  username: 'admin',
+  password: 'admin123',
   rememberMe: false,
-  code: "",
-  uuid: ""
+  code: '',
+  uuid: '',
 });
 
 const loginRules = {
-  username: [{ required: true, trigger: "blur", message: "请输入您的账号" }],
-  password: [{ required: true, trigger: "blur", message: "请输入您的密码" }],
-  code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+  username: [{ required: true, trigger: 'blur', message: '请输入您的账号' }],
+  password: [{ required: true, trigger: 'blur', message: '请输入您的密码' }],
+  code: [{ required: true, trigger: 'change', message: '请输入验证码' }],
 };
 
-const codeUrl = ref("");
+const codeUrl = ref('');
 const loading = ref(false);
 // 验证码开关
 const captchaOnOff = ref(true);
@@ -96,23 +96,23 @@ const register = ref(false);
 const redirect = ref(undefined);
 
 function handleLogin() {
-  proxy.$refs.loginRef.validate(valid => {
+  proxy.$refs.loginRef.validate((valid) => {
     if (valid) {
       loading.value = true;
       // 勾选了需要记住密码设置在cookie中设置记住用户明和名命
       if (loginForm.value.rememberMe) {
-        Cookies.set("username", loginForm.value.username, { expires: 30 });
-        Cookies.set("password", encrypt(loginForm.value.password), { expires: 30 });
-        Cookies.set("rememberMe", loginForm.value.rememberMe, { expires: 30 });
+        Cookies.set('username', loginForm.value.username, { expires: 30 });
+        Cookies.set('password', encrypt(loginForm.value.password), { expires: 30 });
+        Cookies.set('rememberMe', loginForm.value.rememberMe, { expires: 30 });
       } else {
         // 否则移除
-        Cookies.remove("username");
-        Cookies.remove("password");
-        Cookies.remove("rememberMe");
+        Cookies.remove('username');
+        Cookies.remove('password');
+        Cookies.remove('rememberMe');
       }
       // 调用action的登录方法
-      store.dispatch("Login", loginForm.value).then(() => {
-        router.push({ path: redirect.value || "/" });
+      store.dispatch('Login', loginForm.value).then(() => {
+        router.push({ path: redirect.value || '/' });
       }).catch(() => {
         loading.value = false;
         // 重新获取验证码
@@ -125,23 +125,23 @@ function handleLogin() {
 }
 
 function getCode() {
-  getCodeImg().then(res => {
+  getCodeImg().then((res) => {
     captchaOnOff.value = res.captchaOnOff === undefined ? true : res.captchaOnOff;
     if (captchaOnOff.value) {
-      codeUrl.value = "data:image/gif;base64," + res.img;
+      codeUrl.value = `data:image/gif;base64,${res.img}`;
       loginForm.value.uuid = res.uuid;
     }
   });
 }
 
 function getCookie() {
-  const username = Cookies.get("username");
-  const password = Cookies.get("password");
-  const rememberMe = Cookies.get("rememberMe");
+  const username = Cookies.get('username');
+  const password = Cookies.get('password');
+  const rememberMe = Cookies.get('rememberMe');
   loginForm.value = {
     username: username === undefined ? loginForm.value.username : username,
     password: password === undefined ? loginForm.value.password : decrypt(password),
-    rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+    rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
   };
 }
 
