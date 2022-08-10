@@ -431,7 +431,7 @@ watch(deptName, val => {
 /** 查询部门下拉树结构 */
 function getTreeselect() {
   treeselect().then(response => {
-    deptOptions.value = response.data;
+    deptOptions.value = response;
   });
 };
 /** 查询用户列表 */
@@ -555,7 +555,7 @@ function initTreeData() {
   // 判断部门的数据是否存在，存在不获取，不存在则获取
   if (deptOptions.value === undefined) {
     treeselect().then(response => {
-      deptOptions.value = response.data;
+      deptOptions.value = response;
     });
   }
 };
