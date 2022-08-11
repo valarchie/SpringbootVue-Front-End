@@ -3,12 +3,12 @@ import { encrypt, decrypt } from '@/utils/jsencrypt';
 
 // 登录方法
 export function login(username, password, code, uuid) {
-  password = encrypt(password);
+  const passwordEncrypt = encrypt(password);
 
   // console.log(passwordEncrypt);
   const data = {
     username,
-    password,
+    password: passwordEncrypt,
     code,
     uuid,
   };
@@ -37,7 +37,7 @@ export function register(data) {
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: '/getInfo',
+    url: '/getLoginUserInfo',
     method: 'get',
   });
 }

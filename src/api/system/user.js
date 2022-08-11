@@ -51,7 +51,7 @@ export function resetUserPwd(userId, password) {
     password,
   };
   return request({
-    url: '/system/user/resetPwd',
+    url: `/system/user/${userId}/password/reset`,
     method: 'put',
     data,
   });
@@ -64,7 +64,7 @@ export function changeUserStatus(userId, status) {
     status,
   };
   return request({
-    url: '/system/user/changeStatus',
+    url: `/system/user/${userId}/status`,
     method: 'put',
     data,
   });
@@ -94,7 +94,7 @@ export function updateUserPwd(oldPassword, newPassword) {
     newPassword,
   };
   return request({
-    url: '/system/user/profile/updatePwd',
+    url: '/system/user/profile/password',
     method: 'put',
     params: data,
   });
@@ -112,15 +112,16 @@ export function uploadAvatar(data) {
 // 查询授权角色
 export function getAuthRole(userId) {
   return request({
-    url: `/system/user/authRole/${userId}`,
+    url: `/system/user/${userId}/role/`,
     method: 'get',
   });
 }
 
 // 保存授权角色
 export function updateAuthRole(data) {
+  const { userId } = data.userId;
   return request({
-    url: '/system/user/authRole',
+    url: `/system/user/${userId}/role/`,
     method: 'put',
     params: data,
   });

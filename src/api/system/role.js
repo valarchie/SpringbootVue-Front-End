@@ -37,8 +37,9 @@ export function updateRole(data) {
 
 // 角色数据权限
 export function dataScope(data) {
+  const { roleId } = data;
   return request({
-    url: '/system/role/dataScope',
+    url: `/system/role/${roleId}/dataScope`,
     method: 'put',
     data,
   });
@@ -51,7 +52,7 @@ export function changeRoleStatus(roleId, status) {
     status,
   };
   return request({
-    url: '/system/role/changeStatus',
+    url: `/system/role/${roleId}/status`,
     method: 'put',
     data,
   });
@@ -67,8 +68,9 @@ export function delRole(roleId) {
 
 // 查询角色已授权用户列表
 export function allocatedUserList(query) {
+  const { roleId } = query;
   return request({
-    url: '/system/role/authUser/allocatedList',
+    url: `/system/role/${roleId}/allocated/list`,
     method: 'get',
     params: query,
   });
@@ -76,8 +78,9 @@ export function allocatedUserList(query) {
 
 // 查询角色未授权用户列表
 export function unallocatedUserList(query) {
+  const { roleId } = query;
   return request({
-    url: '/system/role/authUser/unallocatedList',
+    url: `/system/role/${roleId}/unallocated/list`,
     method: 'get',
     params: query,
   });
@@ -85,27 +88,30 @@ export function unallocatedUserList(query) {
 
 // 取消用户授权角色
 export function authUserCancel(data) {
+  const { roleId } = data;
   return request({
-    url: '/system/role/authUser/cancel',
-    method: 'put',
+    url: `/system/role/${roleId}/user/grant`,
+    method: 'delete',
     data,
   });
 }
 
 // 批量取消用户授权角色
 export function authUserCancelAll(data) {
+  const { roleId } = data;
   return request({
-    url: '/system/role/authUser/cancelAll',
-    method: 'put',
+    url: `/system/role/${roleId}/user/grant/bulk`,
+    method: 'delete',
     params: data,
   });
 }
 
 // 授权用户选择
 export function authUserSelectAll(data) {
+  const { roleId } = data;
   return request({
-    url: '/system/role/authUser/selectAll',
-    method: 'put',
+    url: `/system/role/${roleId}/user/grant/bulk`,
+    method: 'post',
     params: data,
   });
 }
