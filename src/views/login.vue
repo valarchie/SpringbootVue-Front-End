@@ -25,7 +25,7 @@
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaOnOff">
+      <el-form-item prop="code" v-if="isCaptchaOn">
         <el-input
           v-model="loginForm.code"
           size="large"
@@ -90,7 +90,7 @@ const loginRules = {
 const codeUrl = ref('');
 const loading = ref(false);
 // 验证码开关
-const captchaOnOff = ref(true);
+const isCaptchaOn = ref(true);
 // 注册开关
 const register = ref(false);
 const redirect = ref(undefined);
@@ -116,7 +116,7 @@ function handleLogin() {
       }).catch(() => {
         loading.value = false;
         // 重新获取验证码
-        if (captchaOnOff.value) {
+        if (isCaptchaOn.value) {
           getCode();
         }
       });
@@ -126,8 +126,8 @@ function handleLogin() {
 
 function getCode() {
   getCodeImg().then((res) => {
-    captchaOnOff.value = res.captchaOnOff === undefined ? true : res.captchaOnOff;
-    if (captchaOnOff.value) {
+    isCaptchaOn.value = res.isCaptchaOn === undefined ? true : res.isCaptchaOn;
+    if (isCaptchaOn.value) {
       codeUrl.value = `data:image/gif;base64,${res.img}`;
       loginForm.value.uuid = res.uuid;
     }
