@@ -34,10 +34,10 @@
           placeholder="确认密码"
           @keyup.enter="handleRegister"
         >
-          <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
+      <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaOnOff">
+      <el-form-item prop="code" v-if="isCaptchaOn">
         <el-input
           size="large"
           v-model="registerForm.code"
@@ -120,7 +120,7 @@ const registerRules = {
 
 const codeUrl = ref('');
 const loading = ref(false);
-const captchaOnOff = ref(true);
+const isCaptchaOn = ref(true);
 
 function handleRegister() {
   proxy.$refs.registerRef.validate((valid) => {
@@ -136,7 +136,7 @@ function handleRegister() {
         }).catch(() => {});
       }).catch(() => {
         loading.value = false;
-        if (captchaOnOff) {
+        if (isCaptchaOn) {
           getCode();
         }
       });
@@ -146,8 +146,8 @@ function handleRegister() {
 
 function getCode() {
   getCodeImg().then((res) => {
-    captchaOnOff.value = res.captchaOnOff === undefined ? true : res.captchaOnOff;
-    if (captchaOnOff.value) {
+    isCaptchaOn.value = res.isCaptchaOn === undefined ? true : res.isCaptchaOn;
+    if (isCaptchaOn.value) {
       codeUrl.value = `data:image/gif;base64,${res.img}`;
       registerForm.value.uuid = res.uuid;
     }
