@@ -79,7 +79,7 @@ function getList() {
   proxy.$modal.loading('正在加载缓存监控数据，请稍候！');
   getCache().then((response) => {
     proxy.$modal.closeLoading();
-    cache.value = response.data;
+    cache.value = response;
 
     const commandstatsIntance = echarts.init(commandstats.value, 'macarons');
     commandstatsIntance.setOption({
@@ -94,7 +94,7 @@ function getList() {
           roseType: 'radius',
           radius: [15, 95],
           center: ['50%', '38%'],
-          data: response.data.commandStats,
+          data: response.commandStats,
           animationEasing: 'cubicInOut',
           animationDuration: 1000,
         },
