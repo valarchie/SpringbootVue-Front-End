@@ -56,7 +56,7 @@ export function resetForm(refName) {
   }
 }
 
-// 添加日期范围
+// TODO 弃用  添加日期范围
 export function addDateRange(params, dateRange, propName) {
   const search = params;
   search.params = typeof search.params === 'object'
@@ -73,6 +73,12 @@ export function addDateRange(params, dateRange, propName) {
     search.params[`end${propName}`] = dateRange[1];
   }
   return search;
+}
+
+export function addTimeRange(params, dateRange) {
+  params.beginTime = dateRange[0];
+  params.endTime = dateRange[1];
+  return params;
 }
 
 // 回显数据字典

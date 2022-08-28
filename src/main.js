@@ -25,7 +25,7 @@ import './permission'; // permission control
 
 import { useDict } from '@/utils/dict';
 import {
-  parseTime, resetForm, addDateRange, handleTree, selectDictLabel,
+  parseTime, resetForm, addDateRange, addTimeRange, handleTree, selectDictLabel,
 } from '@/utils/ruoyi';
 
 // 分页组件
@@ -52,6 +52,7 @@ app.config.globalProperties.parseTime = parseTime;
 app.config.globalProperties.resetForm = resetForm;
 app.config.globalProperties.handleTree = handleTree;
 app.config.globalProperties.addDateRange = addDateRange;
+app.config.globalProperties.addTimeRange = addTimeRange;
 app.config.globalProperties.selectDictLabel = selectDictLabel;
 
 // 全局组件挂载
