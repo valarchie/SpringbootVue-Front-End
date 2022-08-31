@@ -9,9 +9,9 @@
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="操作人员" prop="createBy">
+         <el-form-item label="操作人员" prop="creatorName">
             <el-input
-               v-model="queryParams.createBy"
+               v-model="queryParams.creatorName"
                placeholder="请输入操作人员"
                clearable
                @keyup.enter="handleQuery"
@@ -85,7 +85,7 @@
                <dict-tag :options="sys_notice_status" :value="scope.row.status" />
             </template>
          </el-table-column>
-         <el-table-column label="创建者" align="center" prop="createBy" width="100" />
+         <el-table-column label="创建者" align="center" prop="creatorName" width="100" />
          <el-table-column label="创建时间" align="center" prop="createTime" width="100">
             <template #default="scope">
                <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -195,7 +195,7 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     noticeTitle: undefined,
-    createBy: undefined,
+    creatorName: undefined,
     status: undefined,
   },
   rules: {
@@ -258,7 +258,7 @@ function handleUpdate(row) {
   reset();
   const noticeId = row.noticeId || ids.value;
   getNotice(noticeId).then((response) => {
-    form.value = response.data;
+    form.value = response;
     open.value = true;
     title.value = '修改公告';
   });
@@ -267,7 +267,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs.noticeRef.validate((valid) => {
     if (valid) {
-      if (form.value.noticeId != undefined) {
+      if (form.value.noticeId !== undefined) {
         updateNotice(form.value).then((response) => {
           proxy.$modal.msgSuccess('修改成功');
           open.value = false;

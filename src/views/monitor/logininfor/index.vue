@@ -1,18 +1,18 @@
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-         <el-form-item label="登录地址" prop="ipaddr">
+         <el-form-item label="登录地址" prop="ipAddress">
             <el-input
-               v-model="queryParams.ipaddr"
+               v-model="queryParams.ipAddress"
                placeholder="请输入登录地址"
                clearable
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="用户名称" prop="userName">
+         <el-form-item label="用户名称" prop="username">
             <el-input
-               v-model="queryParams.userName"
+               v-model="queryParams.username"
                placeholder="请输入用户名称"
                clearable
                style="width: 240px;"
@@ -85,10 +85,10 @@
       <el-table ref="logininforRef" v-loading="loading" :data="logininforList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
          <el-table-column type="selection" width="55" align="center" />
          <el-table-column label="访问编号" align="center" prop="infoId" />
-         <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
-         <el-table-column label="地址" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
+         <el-table-column label="用户名称" align="center" prop="username" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+         <el-table-column label="地址" align="center" prop="ipAddress" :show-overflow-tooltip="true" />
          <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
-         <el-table-column label="操作系统" align="center" prop="os" :show-overflow-tooltip="true" />
+         <el-table-column label="操作系统" align="center" prop="operationSystem" :show-overflow-tooltip="true" />
          <el-table-column label="浏览器" align="center" prop="browser" :show-overflow-tooltip="true" />
          <el-table-column label="登录状态" align="center" prop="status">
             <template #default="scope">
@@ -132,8 +132,8 @@ const defaultSort = ref({ prop: 'loginTime', order: 'descending' });
 const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
-  ipaddr: undefined,
-  userName: undefined,
+  ipAddress: undefined,
+  username: undefined,
   status: undefined,
   orderByColumn: undefined,
   isAsc: undefined,
@@ -142,7 +142,7 @@ const queryParams = ref({
 /** 查询登录日志列表 */
 function getList() {
   loading.value = true;
-  list(proxy.addDateRange(queryParams.value, dateRange.value)).then((response) => {
+  list(proxy.addTimeRange(queryParams.value, dateRange.value)).then((response) => {
     logininforList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -188,9 +188,9 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('monitor/logininfor/export', {
+  proxy.download('loginInfo/export', {
     ...queryParams.value,
-  }, `config_${new Date().getTime()}.xlsx`);
+  }, `loginInfo_${new Date().getTime()}.xlsx`);
 }
 
 getList();

@@ -1,18 +1,18 @@
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-         <el-form-item label="系统模块" prop="title">
+         <el-form-item label="系统模块" prop="requestModule">
             <el-input
-               v-model="queryParams.title"
+               v-model="queryParams.requestModule"
                placeholder="请输入系统模块"
                clearable
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="操作人员" prop="operName">
+         <el-form-item label="操作人员" prop="username">
             <el-input
-               v-model="queryParams.operName"
+               v-model="queryParams.username"
                placeholder="请输入操作人员"
                clearable
                style="width: 240px;"
@@ -99,24 +99,24 @@
 
       <el-table ref="operlogRef" v-loading="loading" :data="operlogList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="日志编号" align="center" prop="operId" />
-         <el-table-column label="系统模块" align="center" prop="title" />
+         <el-table-column label="日志编号" align="center" prop="operationId" />
+         <el-table-column label="系统模块" align="center" prop="requestModule" />
          <el-table-column label="操作类型" align="center" prop="businessType">
             <template #default="scope">
                <dict-tag :options="sys_oper_type" :value="scope.row.businessType" />
             </template>
          </el-table-column>
          <el-table-column label="请求方式" align="center" prop="requestMethod" />
-         <el-table-column label="操作人员" align="center" prop="operName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" width="100" />
-         <el-table-column label="主机" align="center" prop="operIp" width="130" :show-overflow-tooltip="true" />
+         <el-table-column label="操作人员" align="center" prop="username" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" width="100" />
+         <el-table-column label="主机" align="center" prop="operatorIp" width="130" :show-overflow-tooltip="true" />
          <el-table-column label="操作状态" align="center" prop="status">
             <template #default="scope">
                <dict-tag :options="sys_common_status" :value="scope.row.status" />
             </template>
          </el-table-column>
-         <el-table-column label="操作日期" align="center" prop="operTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+         <el-table-column label="操作日期" align="center" prop="operationTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.operTime) }}</span>
+               <span>{{ parseTime(scope.row.operationTime) }}</span>
             </template>
          </el-table-column>
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -144,35 +144,34 @@
          <el-form :model="form" label-width="100px">
             <el-row>
                <el-col :span="12">
-                  <el-form-item label="操作模块：">{{ form.title }} / {{ typeFormat(form) }}</el-form-item>
+                  <el-form-item label="操作模块：">{{ form.requestModule }} / {{ typeFormat(form) }}</el-form-item>
                   <el-form-item
                     label="登录信息："
-                  >{{ form.operName }} / {{ form.operIp }} / {{ form.operLocation }}</el-form-item>
+                  >{{ form.username }} / {{ form.operatorIp }} / {{ form.operatorLocation }}</el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="请求地址：">{{ form.operUrl }}</el-form-item>
+                  <el-form-item label="请求地址：">{{ form.requestUrl }}</el-form-item>
                   <el-form-item label="请求方式：">{{ form.requestMethod }}</el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="操作方法：">{{ form.method }}</el-form-item>
+                  <el-form-item label="操作方法：">{{ form.calledMethod }}</el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="请求参数：">{{ form.operParam }}</el-form-item>
+                  <el-form-item label="请求参数：">{{ form.operationParam }}</el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="返回参数：">{{ form.jsonResult }}</el-form-item>
+                  <el-form-item label="返回参数：">{{ form.operationResult }}</el-form-item>
                </el-col>
                <el-col :span="12">
                   <el-form-item label="操作状态：">
-                     <div v-if="form.status === 0">正常</div>
-                     <div v-else-if="form.status === 1">失败</div>
+                     {{ form.statusStr }}
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="操作时间：">{{ parseTime(form.operTime) }}</el-form-item>
+                  <el-form-item label="操作时间：">{{ parseTime(form.operationTime) }}</el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="异常信息：" v-if="form.status === 1">{{ form.errorMsg }}</el-form-item>
+                  <el-form-item label="异常信息：" v-if="form.status === 1">{{ form.errorStack }}</el-form-item>
                </el-col>
             </el-row>
          </el-form>
@@ -199,17 +198,17 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref('');
+const requestModule = ref('');
 const dateRange = ref([]);
-const defaultSort = ref({ prop: 'operTime', order: 'descending' });
+const defaultSort = ref({ prop: 'operationTime', order: 'descending' });
 
 const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    title: undefined,
-    operName: undefined,
+    requestModule: undefined,
+    username: undefined,
     businessType: undefined,
     status: undefined,
   },
@@ -220,7 +219,7 @@ const { queryParams, form } = toRefs(data);
 /** 查询登录日志 */
 function getList() {
   loading.value = true;
-  list(proxy.addDateRange(queryParams.value, dateRange.value)).then((response) => {
+  list(proxy.addTimeRange(queryParams.value, dateRange.value)).then((response) => {
     operlogList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -244,7 +243,7 @@ function resetQuery() {
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.operId);
+  ids.value = selection.map((item) => item.operationId);
   multiple.value = !selection.length;
 }
 /** 排序触发事件 */
@@ -260,8 +259,8 @@ function handleView(row) {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const operIds = row.operId || ids.value;
-  proxy.$modal.confirm(`是否确认删除日志编号为"${operIds}"的数据项?`).then(() => delOperlog(operIds)).then(() => {
+  const operationIds = row.operationId || ids.value;
+  proxy.$modal.confirm(`是否确认删除日志编号为"${operationIds}"的数据项?`).then(() => delOperlog(operationIds)).then(() => {
     getList();
     proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
@@ -275,9 +274,9 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('monitor/operlog/export', {
+  proxy.download('operationLog/export', {
     ...queryParams.value,
-  }, `config_${new Date().getTime()}.xlsx`);
+  }, `operation_log_${new Date().getTime()}.xlsx`);
 }
 
 getList();
