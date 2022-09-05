@@ -265,8 +265,8 @@
 import {
   addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole,
 } from '@/api/system/role';
-import { roleMenuTreeselect, treeselect as menuTreeselect } from '@/api/system/menu';
-import { treeselect as deptTreeselect, roleDeptTreeselect } from '@/api/system/dept';
+import { roleMenuTreeselect, treeSelect as menuTreeSelect } from '@/api/system/menu';
+import { treeSelect as deptTreeselect, roleDeptTreeSelect } from '@/api/system/dept';
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();

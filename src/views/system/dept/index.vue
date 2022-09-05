@@ -118,8 +118,8 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="负责人" prop="leader">
-                     <el-input v-model="form.leader" placeholder="请输入负责人" maxlength="20" />
+                  <el-form-item label="负责人" prop="leaderName">
+                     <el-input v-model="form.leaderName" placeholder="请输入负责人" maxlength="20" />
                   </el-form-item>
                </el-col>
                <el-col :span="12">
@@ -209,10 +209,10 @@ function reset() {
     parentId: undefined,
     deptName: undefined,
     orderNum: 0,
-    leader: undefined,
+    leaderName: undefined,
     phone: undefined,
     email: undefined,
-    status: '0',
+    status: 0,
   };
   proxy.resetForm('deptRef');
 }
@@ -229,7 +229,7 @@ function resetQuery() {
 function handleAdd(row) {
   reset();
   listDept().then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, 'deptId');
+    deptOptions.value = proxy.handleTree(response, 'deptId');
   });
   if (row != undefined) {
     form.value.parentId = row.deptId;
@@ -249,10 +249,10 @@ function toggleExpandAll() {
 function handleUpdate(row) {
   reset();
   listDeptExcludeChild(row.deptId).then((response) => {
-    deptOptions.value = proxy.handleTree(response.data, 'deptId');
+    deptOptions.value = proxy.handleTree(response, 'deptId');
   });
   getDept(row.deptId).then((response) => {
-    form.value = response.data;
+    form.value = response;
     open.value = true;
     title.value = '修改部门';
   });

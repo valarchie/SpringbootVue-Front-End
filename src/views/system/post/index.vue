@@ -241,7 +241,7 @@ function handleUpdate(row) {
   reset();
   const postId = row.postId || ids.value;
   getPost(postId).then((response) => {
-    form.value = response.data;
+    form.value = response;
     open.value = true;
     title.value = '修改岗位';
   });
