@@ -265,7 +265,7 @@
 import {
   addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole,
 } from '@/api/system/role';
-import { roleMenuTreeselect, treeSelect as menuTreeSelect } from '@/api/system/menu';
+import { roleMenuTreeSelect, treeSelect as menuTreeSelect } from '@/api/system/menu';
 import { treeSelect as deptTreeselect, roleDeptTreeSelect } from '@/api/system/dept';
 
 const router = useRouter();
@@ -434,7 +434,7 @@ function handleAdd() {
 function handleUpdate(row) {
   reset();
   const roleId = row.roleId || ids.value;
-  const roleMenu = getRoleMenuTreeselect(roleId);
+  const roleMenu = getRoleMenuTreeSelect(roleId);
   getRole(roleId).then((response) => {
     form.value = response.data;
     form.value.roleSort = Number(form.value.roleSort);
@@ -453,8 +453,8 @@ function handleUpdate(row) {
   });
 }
 /** 根据角色ID查询菜单树结构 */
-function getRoleMenuTreeselect(roleId) {
-  return roleMenuTreeselect(roleId).then((response) => {
+function getRoleMenuTreeSelect(roleId) {
+  return roleMenuTreeSelect(roleId).then((response) => {
     menuOptions.value = response.menus;
     return response;
   });
