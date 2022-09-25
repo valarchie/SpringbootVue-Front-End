@@ -86,11 +86,11 @@ export function unallocatedUserList(query) {
   });
 }
 
-// 取消用户授权角色
+// 取消用户授权角色  弃用
 export function authUserCancel(data) {
-  const { roleId } = data;
+  const { roleId, userIds } = data;
   return request({
-    url: `/system/role/${roleId}/user/grant`,
+    url: `/system/role/users/${userIds}/grant`,
     method: 'delete',
     data,
   });
@@ -98,9 +98,9 @@ export function authUserCancel(data) {
 
 // 批量取消用户授权角色
 export function authUserCancelAll(data) {
-  const { roleId } = data;
+  const { roleId, userIds } = data;
   return request({
-    url: `/system/role/${roleId}/user/grant/bulk`,
+    url: `/system/role/users/${userIds}/grant/bulk`,
     method: 'delete',
     params: data,
   });
@@ -108,10 +108,10 @@ export function authUserCancelAll(data) {
 
 // 授权用户选择
 export function authUserSelectAll(data) {
-  const { roleId } = data;
+  const { roleId, userIds } = data;
   return request({
-    url: `/system/role/${roleId}/user/grant/bulk`,
+    url: `/system/role/${roleId}/users/${userIds}/grant/bulk`,
     method: 'post',
-    params: data,
+    data,
   });
 }
