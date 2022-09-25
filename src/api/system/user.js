@@ -96,7 +96,7 @@ export function updateUserPwd(oldPassword, newPassword) {
   return request({
     url: '/system/user/profile/password',
     method: 'put',
-    params: data,
+    data,
   });
 }
 
