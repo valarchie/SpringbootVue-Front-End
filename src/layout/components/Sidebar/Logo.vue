@@ -24,7 +24,7 @@ defineProps({
   },
 });
 
-const title = ref('若依管理系统');
+const title = ref('AgileBoot管理系统');
 const store = useStore();
 const sideTheme = computed(() => store.state.settings.sideTheme);
 </script>
