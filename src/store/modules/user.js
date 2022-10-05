@@ -7,7 +7,7 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: [],
+    role: '',
     permissions: [],
   },
 
@@ -21,8 +21,8 @@ const user = {
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar;
     },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles;
+    SET_ROLE: (state, role) => {
+      state.role = role;
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions;
@@ -54,15 +54,17 @@ const user = {
           const { user } = res;
           console.log(user);
           const avatar = (user.avatar == '' || user.avatar == null) ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
-          console.log(res.roles)
+          console.log("获取的key"+ res.roleKey)
           console.log(res.permissions)
-          if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', res.roles);
+          if (res.roleKey) { 
+            console.log("设置值" + res.roleKey)
+            // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLE', res.roleKey);
             commit('SET_PERMISSIONS', res.permissions);
           } else {
-            commit('SET_ROLES', ['ROLE_DEFAULT']);
+            commit('SET_ROLE', 'ROLE_DEFAULT');
           }
-          commit('SET_NAME', user.userName);
+          commit('SET_NAME', user.username);
           commit('SET_AVATAR', avatar);
           resolve(res);
         }).catch((error) => {
@@ -76,7 +78,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '');
-          commit('SET_ROLES', []);
+          commit('SET_ROLE', null);
           commit('SET_PERMISSIONS', []);
           removeToken();
           resolve();

@@ -11,9 +11,9 @@ function authPermission(permission) {
 
 function authRole(role) {
   const super_admin = 'admin';
-  const roles = store.getters && store.getters.roles;
-  if (role && role.length > 0) {
-    return roles.some((v) => super_admin === v || v === role);
+  const currentRole = store.getters && store.getters.role;
+  if (role && !currentRole) {
+    return super_admin === currentRole || currentRole === role;
   }
   return false;
 }

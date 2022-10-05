@@ -96,7 +96,8 @@ function submitForm() {
     loading.value = true;
     getAuthRole(userId).then((response) => {
       form.value = response.user;
-      roles.value = response.roles;
+      // TODO 改
+      roles.value.push(response.role);
       total.value = roles.value.length;
       nextTick(() => {
         roles.value.forEach((row) => {

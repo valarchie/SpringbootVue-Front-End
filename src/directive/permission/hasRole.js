@@ -9,12 +9,12 @@ export default {
   mounted(el, binding, vnode) {
     const { value } = binding;
     const super_admin = 'admin';
-    const roles = store.getters && store.getters.roles;
+    const currentRole = store.getters && store.getters.role;
 
     if (value && value instanceof Array && value.length > 0) {
       const roleFlag = value;
 
-      const hasRole = roles.some((role) => super_admin === role || roleFlag.includes(role));
+      const hasRole = super_admin === currentRole || roleFlag.includes(currentRole);
 
       if (!hasRole) {
         el.parentNode && el.parentNode.removeChild(el);

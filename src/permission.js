@@ -15,11 +15,14 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
     to.meta.title && store.dispatch('settings/setTitle', to.meta.title);
+
+    console.log(store.getters.role);
     /* has token */
     if (to.path === '/login') {
       next({ path: '/' });
       NProgress.done();
-    } else if (store.getters.roles.length === 0) {
+    } else if (!store.getters.role) {
+      console.log("重复获取")
       isRelogin.show = true;
       // 判断当前用户是否已拉取完user_info信息
       store.dispatch('GetInfo').then(() => {

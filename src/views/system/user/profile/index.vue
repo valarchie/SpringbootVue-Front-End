@@ -27,11 +27,11 @@
                      </li>
                      <li class="list-group-item">
                         <svg-icon icon-class="tree" />所属部门
-                        <div class="pull-right" >{{ state.user.deptName }} / {{ state.postGroup }}</div>
+                        <div class="pull-right" >{{ state.user.deptName }} / {{ state.postName }}</div>
                      </li>
                      <li class="list-group-item">
                         <svg-icon icon-class="peoples" />所属角色
-                        <div class="pull-right">{{ state.roleGroup }}</div>
+                        <div class="pull-right">{{ state.roleName }}</div>
                      </li>
                      <li class="list-group-item">
                         <svg-icon icon-class="date" />创建日期
@@ -71,15 +71,15 @@ import { getUserProfile } from '@/api/system/user';
 const activeTab = ref('userinfo');
 const state = reactive({
   user: {},
-  roleGroup: {},
-  postGroup: {},
+  roleName: {},
+  postName: {},
 });
 
 function getUser() {
   getUserProfile().then((response) => {
     state.user = response.user;
-    state.roleGroup = response.roleGroup;
-    state.postGroup = response.postGroup;
+    state.roleName = response.roleName;
+    state.postName = response.postName;
   });
 }
 
