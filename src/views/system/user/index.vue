@@ -349,7 +349,7 @@
 
 <script setup name="User">
 import { getToken } from '@/utils/auth';
-import { treeSelect } from '@/api/system/dept';
+import { getDeptSelectTree } from '@/api/system/dept';
 import {
   changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser,
 } from '@/api/system/user';
@@ -435,7 +435,7 @@ watch(deptName, (val) => {
 });
 /** 查询部门下拉树结构 */
 function getTreeSelect() {
-  treeSelect().then((response) => {
+   getDeptSelectTree().then((response) => {
     deptOptions.value = response;
   });
 }
@@ -555,7 +555,7 @@ function submitFileForm() {
 function initTreeData() {
   // 判断部门的数据是否存在，存在不获取，不存在则获取
   if (deptOptions.value === undefined) {
-    treeSelect().then((response) => {
+   getDeptSelectTree().then((response) => {
       deptOptions.value = response;
     });
   }

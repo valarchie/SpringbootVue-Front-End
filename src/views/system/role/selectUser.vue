@@ -59,7 +59,7 @@
 </template>
 
 <script setup name="SelectUser">
-import { authUserSelectAll, unallocatedUserList } from '@/api/system/role';
+import { addRoleOfAllUser, unallocatedUserList } from '@/api/system/role';
 
 const props = defineProps({
   roleId: {
@@ -123,7 +123,7 @@ function handleSelectUser() {
     proxy.$modal.msgError('请选择要分配的用户');
     return;
   }
-  authUserSelectAll({ roleId, userIds: uIds }).then((res) => {
+  addRoleOfAllUser({ roleId, userIds: uIds }).then((res) => {
     proxy.$modal.msgSuccess("分配角色成功！");
    //  if (res.code === 0) {
       visible.value = false;

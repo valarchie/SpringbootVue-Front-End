@@ -10,6 +10,7 @@ const getters = {
   introduction: (state) => state.user.introduction,
   role: (state) => state.user.role,
   permissions: (state) => state.user.permissions,
+  dictTypes: (state) => state.user.dictTypes,
   permission_routes: (state) => state.permission.routes,
   topbarRouters: (state) => state.permission.topbarRouters,
   defaultRoutes: (state) => state.permission.defaultRoutes,

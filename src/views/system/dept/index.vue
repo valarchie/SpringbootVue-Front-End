@@ -157,7 +157,7 @@
 
 <script setup name="Dept">
 import {
-  listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild,
+  listDept, getDept, deleteDept, addDept, updateDept, listDeptExcludeCurrentDeptItself,
 } from '@/api/system/dept';
 
 const { proxy } = getCurrentInstance();
@@ -248,7 +248,7 @@ function toggleExpandAll() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  listDeptExcludeChild(row.deptId).then((response) => {
+  listDeptExcludeCurrentDeptItself(row.deptId).then((response) => {
     deptOptions.value = proxy.handleTree(response, 'deptId');
   });
   getDept(row.deptId).then((response) => {
@@ -279,7 +279,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm(`是否确认删除名称为"${row.deptName}"的数据项?`).then(() => delDept(row.deptId)).then(() => {
+  proxy.$modal.confirm(`是否确认删除名称为"${row.deptName}"的数据项?`).then(() => deleteDept(row.deptId)).then(() => {
     getList();
     proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});

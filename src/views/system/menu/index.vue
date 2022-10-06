@@ -292,7 +292,7 @@
 
 <script setup name="Menu">
 import {
-  addMenu, delMenu, getMenu, listMenu, updateMenu,
+  addMenu, deleteMenu, getMenu, listMenu, updateMenu,
 } from '@/api/system/menu';
 import SvgIcon from '@/components/SvgIcon';
 import IconSelect from '@/components/IconSelect';
@@ -440,7 +440,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm(`是否确认删除名称为"${row.menuName}"的数据项?`).then(() => delMenu(row.menuId)).then(() => {
+  proxy.$modal.confirm(`是否确认删除名称为"${row.menuName}"的数据项?`).then(() => deleteMenu(row.menuId)).then(() => {
     getList();
     proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});

@@ -9,8 +9,8 @@ export function listDept(query) {
   });
 }
 
-// 查询部门列表（排除节点）
-export function listDeptExcludeChild(deptId) {
+// 查询部门列表（排除当前自身节点）
+export function listDeptExcludeCurrentDeptItself(deptId) {
   return request({
     url: `/system/dept/list/exclude/${deptId}`,
     method: 'get',
@@ -26,7 +26,7 @@ export function getDept(deptId) {
 }
 
 // 查询部门下拉树结构
-export function treeSelect() {
+export function getDeptSelectTree() {
   return request({
     url: '/system/dept/dropdownList',
     method: 'get',
@@ -34,7 +34,7 @@ export function treeSelect() {
 }
 
 // 根据角色ID查询部门树结构
-export function roleDeptTreeSelect(roleId) {
+export function getDeptTreeSelectByRole(roleId) {
   return request({
     url: `/system/dept/dropdownList/role/${roleId}`,
     method: 'get',
@@ -60,7 +60,7 @@ export function updateDept(data) {
 }
 
 // 删除部门
-export function delDept(deptId) {
+export function deleteDept(deptId) {
   return request({
     url: `/system/dept/${deptId}`,
     method: 'delete',

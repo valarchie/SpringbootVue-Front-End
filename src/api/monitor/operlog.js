@@ -10,9 +10,9 @@ export function list(query) {
 }
 
 // 删除操作日志
-export function delOperlog(operId) {
+export function deleteOperationLog(operationId) {
   return request({
-    url: `/operationLog/${operId}`,
+    url: `/operationLog/${operationId}`,
     method: 'delete',
   });
 }

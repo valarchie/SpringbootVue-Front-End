@@ -18,7 +18,7 @@ export function getMenu(menuId) {
 }
 
 // 查询菜单下拉树结构
-export function treeSelect() {
+export function getMenuSelectTree() {
   return request({
     url: '/system/menu/dropdownList',
     method: 'get',
@@ -26,7 +26,7 @@ export function treeSelect() {
 }
 
 // 根据角色ID查询菜单下拉树结构
-export function roleMenuTreeSelect(roleId) {
+export function getMenuSelectTreeByRole(roleId) {
   return request({
     url: `/system/menu/roleMenuTreeSelect/${roleId}`,
     method: 'get',
@@ -52,7 +52,7 @@ export function updateMenu(data) {
 }
 
 // 删除菜单
-export function delMenu(menuId) {
+export function deleteMenu(menuId) {
   return request({
     url: `/system/menu/${menuId}`,
     method: 'delete',

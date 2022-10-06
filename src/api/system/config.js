@@ -18,7 +18,7 @@ export function getConfig(configId) {
 }
 
 // 根据字典类型查询字典数据信息
-export function getDicts(dictType) {
+export function getDictType(dictType) {
   return request({
     url: `/system/config/dict/${dictType}`,
     method: 'get',

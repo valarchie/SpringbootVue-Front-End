@@ -263,10 +263,10 @@
 
 <script setup name="Role">
 import {
-  addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole,
+  addRole, changeRoleStatus, changeDataScope, deleteRole, getRole, listRole, updateRole,
 } from '@/api/system/role';
-import { roleMenuTreeSelect, treeSelect as menuTreeSelect } from '@/api/system/menu';
-import { treeSelect as deptTreeSelect, roleDeptTreeSelect } from '@/api/system/dept';
+import { getMenuSelectTreeByRole, getMenuSelectTree } from '@/api/system/menu';
+import { getDeptSelectTree, getDeptTreeSelectByRole } from '@/api/system/dept';
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -342,7 +342,7 @@ function resetQuery() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const roleIds = row.roleId || ids.value;
-  proxy.$modal.confirm(`是否确认删除角色编号为"${roleIds}"的数据项?`).then(() => delRole(roleIds)).then(() => {
+  proxy.$modal.confirm(`是否确认删除角色编号为"${roleIds}"的数据项?`).then(() => deleteRole(roleIds)).then(() => {
     getList();
     proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
@@ -454,14 +454,14 @@ function handleUpdate(row) {
 }
 /** 根据角色ID查询菜单树结构 */
 function getRoleMenuTreeSelect(roleId) {
-  return roleMenuTreeSelect(roleId).then((response) => {
+  return getMenuSelectTreeByRole(roleId).then((response) => {
     menuOptions.value = response.menus;
     return response;
   });
 }
 /** 根据角色ID查询部门树结构 */
 function getRoleDeptTreeSelect(roleId) {
-  return roleDeptTreeSelect(roleId).then((response) => {
+  return getDeptTreeSelectByRole(roleId).then((response) => {
     deptOptions.value = response.depts;
     return response;
   });
@@ -539,12 +539,12 @@ function dataScopeSelectChange(value) {
 /** 分配数据权限操作 */
 function handleDataScope(row) {
   reset();
-  const roleDeptTreeSelect = getRoleDeptTreeSelect(row.roleId);
+  const roleDeptTreeResponse = getRoleDeptTreeSelect(row.roleId);
   getRole(row.roleId).then((response) => {
     form.value = response;
     openDataScope.value = true;
     nextTick(() => {
-      roleDeptTreeSelect.then((res) => {
+      roleDeptTreeResponse.then((res) => {
         nextTick(() => {
           if (deptRef.value) {
             deptRef.value.setCheckedKeys(res.checkedKeys);
@@ -559,7 +559,7 @@ function handleDataScope(row) {
 function submitDataScope() {
   if (form.value.roleId != undefined) {
     form.value.deptIds = getDeptAllCheckedKeys();
-    dataScope(form.value).then((response) => {
+    changeDataScope(form.value).then((response) => {
       proxy.$modal.msgSuccess('修改成功');
       openDataScope.value = false;
       getList();

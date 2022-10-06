@@ -10,7 +10,7 @@ export function list(query) {
 }
 
 // 删除登录日志
-export function delLogininfor(infoId) {
+export function deleteLoginInfo(infoId) {
   return request({
     url: `/loginInfo/${infoId}`,
     method: 'delete',
@@ -18,7 +18,7 @@ export function delLogininfor(infoId) {
 }
 
 // 清空登录日志
-export function cleanLogininfor() {
+export function cleanLoginInfo() {
   return request({
     url: '/loginInfo/clean',
     method: 'delete',

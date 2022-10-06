@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login';
+import { login, logout, getLoginUserInfo } from '@/api/login';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import defAva from '@/assets/images/profile.jpg';
 
@@ -9,6 +9,7 @@ const user = {
     avatar: '',
     role: '',
     permissions: [],
+    dictTypes: {},
   },
 
   mutations: {
@@ -26,6 +27,9 @@ const user = {
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions;
+    },
+    SET_DICT_TYPES: (state, dictTypes) => {
+      state.dictTypes = dictTypes;
     },
   },
 
@@ -50,17 +54,17 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo().then((res) => {
+        getLoginUserInfo().then((res) => {
           const { user } = res;
-          console.log(user);
+          // console.log(user);
           const avatar = (user.avatar == '' || user.avatar == null) ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
-          console.log("获取的key"+ res.roleKey)
-          console.log(res.permissions)
+          // console.log("获取的key"+ res.roleKey)
+          // console.log(res.permissions)
           if (res.roleKey) { 
-            console.log("设置值" + res.roleKey)
             // 验证返回的roles是否是一个非空数组
             commit('SET_ROLE', res.roleKey);
             commit('SET_PERMISSIONS', res.permissions);
+            commit('SET_DICT_TYPES', res.dictTypes);
           } else {
             commit('SET_ROLE', 'ROLE_DEFAULT');
           }

@@ -154,7 +154,7 @@
 
 <script setup name="Post">
 import {
-  listPost, addPost, delPost, getPost, updatePost,
+  listPost, addPost, deletePost, getPost, updatePost,
 } from '@/api/system/post';
 
 const { proxy } = getCurrentInstance();
@@ -269,7 +269,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const postIds = row.postId || ids.value;
-  proxy.$modal.confirm(`是否确认删除岗位编号为"${postIds}"的数据项？`).then(() => delPost(postIds)).then(() => {
+  proxy.$modal.confirm(`是否确认删除岗位编号为"${postIds}"的数据项？`).then(() => deletePost(postIds)).then(() => {
     getList();
     proxy.$modal.msgSuccess('删除成功');
   }).catch(() => {});
